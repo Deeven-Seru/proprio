@@ -88,14 +88,13 @@ public struct ARViewContainer: UIViewRepresentable {
         func showGuidePath() {
             guard let arView = arView, guidePathAnchor == nil else { return }
             
-            // Create a rhythmic visual cue (series of bars on floor)
-            // For MVP: Simple long green strip
-            let mesh = MeshResource.generateBox(size: [0.4, 0.005, 3.0]) // 3m path, 40cm wide
-            let material = SimpleMaterial(color: .green.withAlphaComponent(0.6), isMetallic: false)
+            // Create a simple guide line (long green rectangle on floor)
+            let mesh = MeshResource.generateBox(size: [0.1, 0.01, 2.0]) // 2m long path
+            let material = SimpleMaterial(color: .green, isMetallic: false)
             let entity = ModelEntity(mesh: mesh, materials: [material])
             
-            // Create anchor
-            let anchor = AnchorEntity(plane: .horizontal)
+            // Create anchor using explicit AnchoringComponent target for compatibility
+            let anchor = AnchorEntity(.plane(.horizontal, classification: .any, minimumBounds: [0.2, 0.2]))
             anchor.addChild(entity)
             
             arView.scene.addAnchor(anchor)
