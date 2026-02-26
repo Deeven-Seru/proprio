@@ -1,4 +1,5 @@
 import SwiftUI
+import ProprioCore
 
 @main
 public struct ProprioApp: App {

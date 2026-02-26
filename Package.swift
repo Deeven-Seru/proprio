@@ -10,6 +10,9 @@ let package = Package(
     ],
     products: [
         // Products define the executables and libraries a package produces, making them visible to other packages.
+        .executable(
+            name: "ProprioApp",
+            targets: ["ProprioApp"]),
         .library(
             name: "ProprioCore",
             targets: ["ProprioCore"]),
@@ -17,8 +20,14 @@ let package = Package(
     targets: [
         // Targets are the basic building blocks of a package, defining a module or a test suite.
         // Targets can depend on other targets in this package and products from dependencies.
+        .executableTarget(
+            name: "ProprioApp",
+            dependencies: ["ProprioCore"],
+            path: "Sources/ProprioApp"), // Explicit path if needed
         .target(
-            name: "ProprioCore"),
+            name: "ProprioCore",
+            dependencies: [],
+            path: "Sources/ProprioCore"),
         .testTarget(
             name: "ProprioCoreTests",
             dependencies: ["ProprioCore"]),
