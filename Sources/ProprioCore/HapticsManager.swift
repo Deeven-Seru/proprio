@@ -26,7 +26,18 @@ public class HapticController: ObservableObject {
     @Published public var lastError: HapticError?
     
     // Configurable parameters
-    public var rhythmBpm: Double = 60.0 // Base metronome (steps per minute)
+    @Published public var rhythmBpm: Double = 60.0 { // Base metronome (steps per minute)
+        didSet {
+            // Restart timer with new BPM if entrainment is active
+            if isPlayingEntrainment {
+                timer?.invalidate()
+                let interval = 60.0 / rhythmBpm
+                timer = Timer.scheduledTimer(withTimeInterval: interval, repeats: true) { [weak self] _ in
+                    self?.playSharpTick()
+                }
+            }
+        }
+    }
     
     public init() {
         prepareHaptics()

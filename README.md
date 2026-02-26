@@ -99,7 +99,7 @@ graph TD
 ### Build Instructions
 1.  Clone the repository:
     ```bash
-    git clone https://github.com/Deeven-Seru/haptics.git
+    git clone https://github.com/Deeven-Seru/proprio.git
     ```
 2.  Open `Package.swift` in Xcode.
 3.  Select your physical device target.
