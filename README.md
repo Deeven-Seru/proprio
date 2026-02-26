@@ -1,37 +1,61 @@
-# Proprio: AR-Based Proprioceptive Assistant
-**Swift Student Challenge 2025 Submission Candidate**
+# Proprio
+### Restoring Agency through Augmented Perception.
 
-## Overview
-Proprio is an iOS/iPadOS application designed to assist individuals with movement disorders (Parkinson's, Dyspraxia, Stroke recovery) by providing real-time biofeedback through AR visual cues and rhythmic haptic entrainment.
+**Proprio** is a clinical-grade assistive tool designed to stabilize movement for individuals with Parkinson’s Disease, Essential Tremor, and Dyspraxia.
 
-**Core Technologies:**
-- **Vision Framework:** Real-time pose estimation to detect tremor amplitude and gait asymmetry.
-- **ARKit/RealityKit:** Projects a visual "guide path" on the floor to overcome freezing of gait.
-- **CoreHaptics:** Delivers rhythmic haptic pulses (Rhythmic Auditory Stimulation) directly to the wrist to synchronize movement.
-- **CoreML:** On-device analysis of motion variance.
-
-## Architecture
-- `MotionAnalyzer`: Vision-based pose tracking and variance calculation.
-- `HapticsManager`: CoreHaptics engine for rhythmic entrainment.
-- `ARManager`: ARSession handling and visual overlay logic.
-- `ContentView`: SwiftUI dashboard with real-time biofeedback metrics.
-
-## Building the Project
-### Prerequisites
-- Xcode 15+ (iOS 17 SDK)
-- GitHub Account (for CI/CD)
-
-### Local Build
-1. Clone this repository.
-2. Open `Package.swift` in Xcode.
-3. Select the `Proprio-iOS` scheme and a physical device (AR/Haptics require hardware).
-4. Build & Run.
-
-### GitHub Actions (CI)
-This repository includes a workflow (`.github/workflows/swift.yml`) that automatically builds the project on every push to `main` using macOS runners.
-
-## Why This Wins
-This is not a game. It is a medical utility that leverages the full Apple technology stack (Vision, AR, Haptics) to solve a profound human problem. It demonstrates technical depth and empathy.
+It bypasses damaged neural pathways by closing the loop between **visual perception** and **haptic sensation**.
 
 ---
-*Built with strategic precision.*
+
+## The Problem: Sensorimotor Disconnection
+For millions, the connection between *intention* and *motion* is noisy.
+- **Freezing of Gait (FoG):** The brain fails to sequence the next step.
+- **Action Tremor:** Fine motor control degrades during voluntary movement.
+
+## The Solution: Sensory Entrainment
+Proprio uses the iPhone/iPad as an external cortex to provide the rhythmic cues the basal ganglia cannot.
+
+### 1. Visual Guide Paths (ARKit)
+Projects high-contrast, rhythmic visual cues onto the physical floor. This leverages **paradoxical kinesis**—allowing a patient to step *over* a virtual line when they cannot step *forward* on a blank floor.
+
+### 2. Haptic Metronome (CoreHaptics)
+Delivers precise, transient haptic pulses to the wrist (Rhythmic Auditory Stimulation methodology). This provides a temporal template for the brain to synchronize movement, reducing gait variability.
+
+### 3. Real-Time Variance Analysis (Vision)
+Tracks 19 body keypoints at 60fps using the Neural Engine. It calculates tremor amplitude and gait symmetry in real-time, adjusting feedback intensity dynamically.
+
+---
+
+## Technical Architecture
+
+Built exclusively for iOS/iPadOS to leverage Apple's silicon.
+
+| Component | Technology | Role |
+|-----------|------------|------|
+| **Sensation** | **CoreHaptics** | High-fidelity, transient haptic patterns for entrainment. |
+| **Perception** | **ARKit + RealityKit** | World tracking, plane detection, and occlusion. |
+| **Analysis** | **Vision Framework** | `VNDetectHumanBodyPoseRequest` running on Neural Engine. |
+| **Interface** | **SwiftUI** | High-contrast, accessibility-first clinical HUD. |
+
+## Privacy & Safety
+- **On-Device Processing:** No video feeds leave the device. All Vision analysis happens locally.
+- **Clinical Focus:** Designed for high-contrast visibility and minimal cognitive load.
+
+## Building the Project
+
+### Requirements
+- iOS 17.0+
+- iPhone with Haptic Engine (iPhone 8 or later)
+- Xcode 15+
+
+### Installation
+```bash
+git clone https://github.com/Deeven-Seru/haptics.git
+cd haptics
+open Package.swift
+```
+Select your physical device in Xcode (AR and Haptics do not run on Simulator) and press **Run**.
+
+---
+
+*Proprio is a research preview. It is not a certified medical device.*
