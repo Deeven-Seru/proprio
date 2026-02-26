@@ -69,9 +69,7 @@ public struct ContentView: View {
     private let sessionTimerPublisher = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
 
     // Trend tracking
-    @State private var previousTremor: Double = 0
     @State private var previousGait: Double = 1.0
-    @State private var tremorTrend: TrendDirection = .stable
     @State private var gaitTrend: TrendDirection = .stable
 
     // Onboarding
@@ -423,12 +421,23 @@ public struct ContentView: View {
 
     private func updateTrends(newTremor: Double, newGait: Double) {
         let threshold = 0.02
-        let tremorDelta = newTremor - previousTremor
         let gaitDelta = newGait - previousGait
-        tremorTrend = abs(tremorDelta) < threshold ? .stable : (tremorDelta > 0 ? .increasing : .decreasing)
-        gaitTrend = abs(gaitDelta) < threshold ? .stable : (gaitDelta > 0 ? .increasing : .decreasing)
-        previousTremor = newTremor
+        gaitTrend = calculateTrend(delta: gaitDelta, threshold: threshold)
         previousGait = newGait
+    }
+
+    private func calculateTrend(delta: Double, threshold: Double) -> TrendDirection {
+        if abs(delta) < threshold { return .stable }
+        return delta > 0 ? .increasing : .decreasing
+    }
+
+    /// Maps MotionAnalyzer's tremor trend to ContentView's TrendDirection
+    private var tremorTrend: TrendDirection {
+        switch motionAnalyzer.tremorTrend {
+        case .increasing: return .increasing
+        case .decreasing: return .decreasing
+        case .stable: return .stable
+        }
     }
 
     private func openAppSettings() {

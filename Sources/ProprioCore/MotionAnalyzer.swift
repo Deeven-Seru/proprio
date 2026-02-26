@@ -59,6 +59,8 @@ public class MotionAnalyzer: ObservableObject {
     // Trend tracking
     private var recentAmplitudes: [Double] = []
     private let trendWindowSize = 30
+    private let minTrendSamples = 10
+    private let trendThreshold = 0.02
     
     // Gait step detection
     private var lastStepTime: TimeInterval = 0
@@ -252,15 +254,15 @@ public class MotionAnalyzer: ObservableObject {
         }
         
         let trend: TremorTrend
-        if recentAmplitudes.count >= 10 {
+        if recentAmplitudes.count >= minTrendSamples {
             let firstHalf = Array(recentAmplitudes.prefix(recentAmplitudes.count / 2))
             let secondHalf = Array(recentAmplitudes.suffix(recentAmplitudes.count / 2))
             let firstAvg = firstHalf.reduce(0, +) / Double(firstHalf.count)
             let secondAvg = secondHalf.reduce(0, +) / Double(secondHalf.count)
             let diff = secondAvg - firstAvg
-            if diff > 0.02 {
+            if diff > trendThreshold {
                 trend = .increasing
-            } else if diff < -0.02 {
+            } else if diff < -trendThreshold {
                 trend = .decreasing
             } else {
                 trend = .stable

@@ -21,6 +21,8 @@ public class HapticController: ObservableObject {
     private var engine: CHHapticEngine?
     private var timer: Timer?
     
+    private let minHapticIntensity: Float = 0.1
+    
     // Published properties for UI/Status
     @Published public var isPlayingEntrainment: Bool = false
     @Published public var lastError: HapticError?
@@ -117,7 +119,7 @@ public class HapticController: ObservableObject {
         guard let engine = engine else { return }
         
         // Scale intensity by user preference
-        let scaledIntensity = max(0.1, hapticIntensity)
+        let scaledIntensity = max(minHapticIntensity, hapticIntensity)
         
         let intensity = CHHapticEventParameter(parameterID: .hapticIntensity, value: scaledIntensity)
         let sharpness = CHHapticEventParameter(parameterID: .hapticSharpness, value: 1.0)
@@ -135,7 +137,7 @@ public class HapticController: ObservableObject {
     /// Provides continuous feedback proportional to tremor intensity.
     /// - Parameter intensity: Normalized intensity (0.0 to 1.0).
     public func playTremorCorrection(intensity: Float) {
-        guard let engine = engine, intensity > 0.1 else { return }
+        guard let engine = engine, intensity > minHapticIntensity else { return }
         
         // Scale by user preference
         let scaledIntensity = intensity * hapticIntensity
