@@ -86,8 +86,8 @@ enum MetricState {
     var color: Color {
         switch self {
         case .normal: return Color.green
-        case .warning: return Color.yellow
-        case .critical: return Color.red
+        case .warning: return Color.orange // Changed from Yellow for better visibility
+        case .critical: return Color.blue // Changed from Red to Blue to reduce anxiety (Psychological Safety)
         }
     }
 }
