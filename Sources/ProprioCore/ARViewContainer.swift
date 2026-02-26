@@ -3,6 +3,7 @@ import ARKit
 import RealityKit
 import SwiftUI
 
+// Ensure ARKit is available for Coaching Overlay
 public struct ARViewContainer: UIViewRepresentable {
     @ObservedObject var analyzer: MotionAnalyzer
     @ObservedObject var haptics: HapticController
@@ -30,6 +31,14 @@ public struct ARViewContainer: UIViewRepresentable {
         // Add Coordinator as Delegate
         context.coordinator.arView = arView
         arView.session.delegate = context.coordinator
+        
+        // Add ARCoachingOverlayView (Apple Standard Polish)
+        let coachingOverlay = ARCoachingOverlayView()
+        coachingOverlay.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        coachingOverlay.session = arView.session
+        coachingOverlay.goal = .horizontalPlane
+        coachingOverlay.activatesAutomatically = true
+        arView.addSubview(coachingOverlay)
         
         return arView
     }

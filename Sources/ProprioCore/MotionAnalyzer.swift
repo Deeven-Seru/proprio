@@ -110,14 +110,20 @@ public class MotionAnalyzer: ObservableObject {
         let totalVariance = sqrt(varianceX + varianceY)
         
         // Normalize for UI (heuristic scaling)
-        let normalizedAmplitude = min(totalVariance * 500, 1.0)
+        let rawAmplitude = min(totalVariance * 500, 1.0)
+        
+        // Apply Exponential Moving Average (EMA) for clinical smoothness
+        // Alpha of 0.2 means we value new data at 20% and history at 80%
+        // This prevents the numbers from jittering wildly
+        let alpha = 0.2
+        let smoothedAmplitude = (rawAmplitude * alpha) + (self.tremorAmplitude * (1.0 - alpha))
         
         // Gait Stability simulation (in real app, this would analyze leg keypoints)
         // For demo, we inversely correlate with tremor
-        let simulatedStability = max(1.0 - (normalizedAmplitude * 0.5), 0.0)
+        let simulatedStability = max(1.0 - (smoothedAmplitude * 0.5), 0.0)
         
         DispatchQueue.main.async {
-            self.tremorAmplitude = normalizedAmplitude
+            self.tremorAmplitude = smoothedAmplitude
             self.gaitStabilityIndex = simulatedStability
         }
     }
